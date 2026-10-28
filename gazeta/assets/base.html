@@ -1,0 +1,582 @@
+<title>Главные новости</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=PT+Sans+Narrow:wght@400;700&display=swap">
+<style>
+/* Layout: broadsheet front page — masthead, lead story across, then section columns that collapse to one on phones */
+:root{
+  --paper:#f5f4ef; --ink:#1b1c1f; --muted:#5d5f66; --rule:#c9c7bf; --accent:#1f3d6b; --tint:#e9e7df;
+  --f-display:"Playfair Display",Georgia,"Times New Roman",serif;
+  --f-body:"PT Serif",Georgia,"Times New Roman",serif;
+  --f-label:"PT Sans Narrow","Arial Narrow",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#16171a;--ink:#e8e6df;--muted:#a3a39c;--rule:#3a3b3f;--accent:#9db6de;--tint:#202226;color-scheme:dark}}
+:root[data-theme="dark"]{--paper:#16171a;--ink:#e8e6df;--muted:#a3a39c;--rule:#3a3b3f;--accent:#9db6de;--tint:#202226;color-scheme:dark}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.page{max-width:1120px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.masthead{text-align:center;border-bottom:4px double var(--ink);padding-bottom:14px}
+.masthead .top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--f-label);text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--muted);border-bottom:1px solid var(--rule);padding-bottom:8px}
+.masthead h1{font-family:var(--f-display);font-weight:900;font-size:clamp(40px,8vw,88px);line-height:1;margin:14px 0 6px;letter-spacing:-.01em}
+.masthead .window{font-family:var(--f-label);font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.brief{border-bottom:1px solid var(--ink);padding:18px 0;font-size:19px;font-style:italic;max-width:none}
+.brief p{margin:0;max-width:75ch;margin-inline:auto;text-align:center}
+.label{font-family:var(--f-label);font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:13px;color:var(--accent)}
+article h2,article h3{font-family:var(--f-display);font-weight:700;line-height:1.15;text-wrap:balance;margin:6px 0 10px}
+article p{margin:0 0 10px}
+figure{margin:0 0 12px}
+figure img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;max-width:100%;filter:grayscale(.15)}
+figcaption{font-family:var(--f-label);font-size:13px;color:var(--muted);padding-top:4px}
+.lead{display:grid;grid-template-columns:1.6fr 1fr;gap:28px;padding:24px 0;border-bottom:1px solid var(--ink)}
+.lead > *{min-width:0}
+.lead article h2{font-size:clamp(28px,4vw,44px)}
+.lead article p{font-size:18px}
+.lead > article > p:first-of-type::first-letter{font-family:var(--f-display);float:left;font-size:3.4em;line-height:.85;padding:4px 8px 0 0;font-weight:900}
+.lead aside{border-left:1px solid var(--rule);padding-left:28px;display:flex;flex-direction:column;gap:18px}
+.lead aside article + article{border-top:1px solid var(--rule);padding-top:16px}
+.lead aside h3{font-size:22px}
+.sections{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding-top:8px}
+.col{padding:16px 22px;border-left:1px solid var(--rule);min-width:0;display:flex;flex-direction:column;gap:18px}
+.col:first-child{border-left:0;padding-left:0}.col:last-child{padding-right:0}
+.col > .label{border-bottom:2px solid var(--ink);padding-bottom:4px}
+.col article + article{border-top:1px solid var(--rule);padding-top:16px}
+.col h3{font-size:21px}
+.col p{font-size:16px}
+.src{font-family:var(--f-label);font-size:13px;color:var(--muted)}
+.src a{color:inherit}
+.figs{font-variant-numeric:tabular-nums}
+.joke{margin:28px auto 0;max-width:720px;border:1px solid var(--ink);outline:1px solid var(--ink);outline-offset:4px;padding:22px 26px;background:var(--tint);display:flex;flex-direction:column;gap:10px}
+.joke .label{text-align:center}
+.joke h2{font-family:var(--f-display);font-weight:900;font-size:26px;text-align:center;margin:0}
+.joke p{margin:0;font-size:18px}
+.joke .note{font-family:var(--f-label);font-size:13px;color:var(--muted);text-align:center;font-style:normal}
+.archive{margin-top:28px;border-top:1px solid var(--ink);padding-top:14px;display:flex;flex-direction:column;gap:10px}
+.archive ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.archive a{display:inline-block;font-family:var(--f-label);font-size:15px;letter-spacing:.02em;color:var(--ink);text-decoration:none;border:1px solid var(--rule);padding:6px 12px;background:var(--tint)}
+.archive a:hover{border-color:var(--ink)}
+.archive .more{font-family:var(--f-label);font-size:13px;color:var(--muted)}
+.backbar{font-family:var(--f-label);font-size:14px;letter-spacing:.04em;text-transform:uppercase;padding-bottom:10px}
+.backbar a{color:var(--accent)}
+footer{margin-top:28px;border-top:4px double var(--ink);padding-top:14px;font-size:14px;color:var(--muted)}
+footer ol{columns:2;column-gap:32px;padding-left:20px;margin:8px 0 0}
+footer li{break-inside:avoid;margin-bottom:4px}
+footer a{color:var(--ink)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:860px){.lead{grid-template-columns:1fr}.lead aside{border-left:0;padding-left:0;border-top:1px solid var(--rule);padding-top:18px}.sections{grid-template-columns:1fr}.col{border-left:0;padding:16px 0;border-top:1px solid var(--ink)}footer ol{columns:1}}
+.art{width:100%;aspect-ratio:3/2;max-width:100%;background:var(--tint);overflow:hidden}
+.art canvas{display:block;width:100%!important;height:auto!important}
+figure .art + figcaption{font-style:italic}
+</style>
+
+{{BODY}}
+<script>
+/* Мини-движок в духе p5.js (instance mode) на Canvas 2D: только то, что нужно живым иллюстрациям. Без внешних зависимостей. */
+(function () {
+  function mulberry(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  function makeNoise(seed) {
+    const r = mulberry(seed), P = new Uint8Array(512), g = [];
+    const perm = [...Array(256).keys()];
+    for (let i = 255; i > 0; i--) { const j = Math.floor(r() * (i + 1)); [perm[i], perm[j]] = [perm[j], perm[i]]; }
+    for (let i = 0; i < 512; i++) P[i] = perm[i & 255];
+    for (let i = 0; i < 256; i++) g.push(r() * 2 - 1);
+    const fade = t => t * t * t * (t * (t * 6 - 15) + 10);
+    const L = (a, b, t) => a + (b - a) * t;
+    const grad = (h, x, y, z) => { const u = (h & 15) < 8 ? x : y, v = (h & 15) < 4 ? y : ((h & 15) === 12 || (h & 15) === 14) ? x : z; return ((h & 1) ? -u : u) + ((h & 2) ? -v : v); };
+    function n3(x, y, z) {
+      const X = Math.floor(x) & 255, Y = Math.floor(y) & 255, Z = Math.floor(z) & 255;
+      x -= Math.floor(x); y -= Math.floor(y); z -= Math.floor(z);
+      const u = fade(x), v = fade(y), w = fade(z);
+      const A = P[X] + Y, AA = P[A] + Z, AB = P[A + 1] + Z, B = P[X + 1] + Y, BA = P[B] + Z, BB = P[B + 1] + Z;
+      return L(L(L(grad(P[AA], x, y, z), grad(P[BA], x - 1, y, z), u), L(grad(P[AB], x, y - 1, z), grad(P[BB], x - 1, y - 1, z), u), v),
+        L(L(grad(P[AA + 1], x, y, z - 1), grad(P[BA + 1], x - 1, y, z - 1), u), L(grad(P[AB + 1], x, y - 1, z - 1), grad(P[BB + 1], x - 1, y - 1, z - 1), u), v), w);
+    }
+    return (x, y = 0, z = 0) => { let s = 0, a = 0.5, f = 1, m = 0; for (let o = 0; o < 2; o++) { s += a * n3(x * f, y * f, z * f); m += a; a *= 0.5; f *= 2; } return Math.min(1, Math.max(0, 0.5 + s / m * 0.9)); };
+  }
+  class Color {
+    constructor(str) {
+      let s = String(str).trim();
+      if (!/^#[0-9a-f]{6}$/i.test(s) && !/^rgba?\(/i.test(s)) { const c = sharedCtx(); c.fillStyle = '#000'; c.fillStyle = s; s = c.fillStyle; }
+      if (/^#[0-9a-f]{3}$/i.test(s)) s = '#' + s[1] + s[1] + s[2] + s[2] + s[3] + s[3];
+      if (s[0] === '#') { this.r = parseInt(s.slice(1, 3), 16); this.g = parseInt(s.slice(3, 5), 16); this.b = parseInt(s.slice(5, 7), 16); }
+      else { const m = s.match(/[\d.]+/g) || [0, 0, 0]; this.r = +m[0]; this.g = +m[1]; this.b = +m[2]; }
+      this.a = 255;
+    }
+    setAlpha(a) { this.a = Math.max(0, Math.min(255, a)); }
+    toString() { return `rgba(${this.r},${this.g},${this.b},${(this.a / 255).toFixed(3)})`; }
+  }
+  let _sc = null; function sharedCtx() { return _sc || (_sc = document.createElement('canvas').getContext('2d')); }
+  const cache = new Map();
+  function parse(v) { if (v instanceof Color) return v; if (!cache.has(v)) cache.set(v, new Color(v)); const c = cache.get(v); const n = Object.create(Color.prototype); n.r = c.r; n.g = c.g; n.b = c.b; n.a = 255; return n; }
+  const css = v => (typeof v === 'string' && v.charCodeAt(0) === 114 /* r */) ? v : String(parse(v));
+
+  function Ctx(canvas, owner) {
+    const p = this; p.canvas = canvas; p.drawingContext = canvas.getContext('2d');
+    p.LEFT = 'left'; p.RIGHT = 'right'; p.CENTER = 'center'; p.TOP = 'top'; p.BOTTOM = 'bottom'; p.CLOSE = 'close'; p.BOLD = 'bold'; p.NORMAL = 'normal';
+    let dens = 1, doFill = true, doStroke = true, font = 'serif', size = 12, style = 'normal', ha = 'left', va = 'alphabetic', shape = null;
+    let rnd = Math.random, nz = makeNoise(1);
+    p.width = 0; p.height = 0;
+    const g = () => p.drawingContext;
+    function apply() { g().setTransform(dens, 0, 0, dens, 0, 0); g().lineCap = 'round'; g().lineJoin = 'round'; g().font = `${style} ${size}px ${font}`; g().textAlign = ha; g().textBaseline = va; }
+    p._size = (w, h) => { p.width = w; p.height = h; canvas.width = Math.round(w * dens); canvas.height = Math.round(h * dens); canvas.style.width = w + 'px'; canvas.style.height = h + 'px'; apply(); };
+    p.pixelDensity = d => { dens = d; p._size(p.width, p.height); };
+    p.resizeCanvas = (w, h) => p._size(w, h);
+    p.random = (a, b) => { if (a === undefined) return rnd(); if (b === undefined) return rnd() * a; return a + rnd() * (b - a); };
+    p.randomSeed = s => { rnd = mulberry(s); };
+    p.noiseSeed = s => { nz = makeNoise(s); };
+    p.noise = (x, y, z) => nz(x, y, z);
+    p.color = v => parse(v);
+    p.constrain = (v, a, b) => Math.min(b, Math.max(a, v));
+    p.lerp = (a, b, t) => a + (b - a) * t;
+    p.fill = c => { doFill = true; g().fillStyle = css(c); };
+    p.stroke = c => { doStroke = true; g().strokeStyle = css(c); };
+    p.noFill = () => { doFill = false; }; p.noStroke = () => { doStroke = false; };
+    p.strokeWeight = w => { g().lineWidth = w; };
+    const paint = () => { if (doFill) g().fill(); if (doStroke) g().stroke(); };
+    p.background = c => { g().save(); g().setTransform(1, 0, 0, 1, 0, 0); g().fillStyle = css(c); g().fillRect(0, 0, canvas.width, canvas.height); g().restore(); };
+    p.clear = () => { g().save(); g().setTransform(1, 0, 0, 1, 0, 0); g().clearRect(0, 0, canvas.width, canvas.height); g().restore(); };
+    p.circle = (x, y, d) => { g().beginPath(); g().arc(x, y, Math.max(0, d / 2), 0, Math.PI * 2); paint(); };
+    p.ellipse = (x, y, w, h) => { g().beginPath(); g().ellipse(x, y, Math.max(0, w / 2), Math.max(0, h / 2), 0, 0, Math.PI * 2); paint(); };
+    p.arc = (x, y, w, h, a, b) => { g().beginPath(); g().ellipse(x, y, w / 2, h / 2, 0, a, b); if (doStroke) g().stroke(); };
+    p.rect = (x, y, w, h) => { g().beginPath(); g().rect(x, y, w, h); paint(); };
+    p.line = (a, b, c, d) => { if (!doStroke) return; g().beginPath(); g().moveTo(a, b); g().lineTo(c, d); g().stroke(); };
+    p.triangle = (a, b, c, d, e, f) => { g().beginPath(); g().moveTo(a, b); g().lineTo(c, d); g().lineTo(e, f); g().closePath(); paint(); };
+    p.quad = (a, b, c, d, e, f, h, i) => { g().beginPath(); g().moveTo(a, b); g().lineTo(c, d); g().lineTo(e, f); g().lineTo(h, i); g().closePath(); paint(); };
+    p.bezier = (a, b, c, d, e, f, h, i) => { g().beginPath(); g().moveTo(a, b); g().bezierCurveTo(c, d, e, f, h, i); if (doStroke) g().stroke(); };
+    p.beginShape = () => { shape = 0; g().beginPath(); };
+    p.vertex = (x, y) => { if (shape === 0) g().moveTo(x, y); else g().lineTo(x, y); shape++; };
+    p.bezierVertex = (a, b, c, d, e, f) => { g().bezierCurveTo(a, b, c, d, e, f); shape++; };
+    p.endShape = m => { if (m === 'close') g().closePath(); if (doFill && (m === 'close' || shape > 2)) g().fill(); if (doStroke) g().stroke(); shape = null; };
+    p.textFont = f => { font = `"${f}", Georgia, serif`; apply(); };
+    p.textSize = s => { size = s; apply(); };
+    p.textStyle = s => { style = s; apply(); };
+    p.textAlign = (h, v) => { ha = h; va = v === 'top' ? 'top' : v === 'bottom' ? 'bottom' : v === 'center' ? 'middle' : 'alphabetic'; apply(); };
+    p.textWidth = s => g().measureText(s).width;
+    p.text = (s, x, y) => { if (doFill) g().fillText(s, x, y); };
+    p.push = () => g().save(); p.pop = () => { g().restore(); };
+    p.translate = (x, y) => g().translate(x, y); p.rotate = a => g().rotate(a);
+    p.image = (src, x, y) => { g().save(); g().setTransform(1, 0, 0, 1, 0, 0); g().drawImage(src.canvas, x * dens, y * dens); g().restore(); };
+    p.createGraphics = (w, h) => { const c = document.createElement('canvas'); const q = new Ctx(c); q.pixelDensity(dens); q._size(w, h); return q; };
+    p._dens = () => dens;
+    p.millis = () => performance.now() - (owner ? owner.t0 : 0);
+  }
+
+  const live = new Set(); let raf = 0;
+  function frame() { raf = 0; for (const s of live) s.draw && s.draw(); if (live.size) raf = requestAnimationFrame(frame); }
+  function wake() { if (!raf && live.size) raf = requestAnimationFrame(frame); }
+  window.p5 = function (sketch, el) {
+    const canvas = document.createElement('canvas');
+    const self = this; self.t0 = performance.now();
+    const p = new Ctx(canvas, self);
+    p.createCanvas = (w, h) => { p._size(w, h); el.appendChild(canvas); };
+    p.loop = () => { live.add(p); wake(); };
+    p.noLoop = () => { live.delete(p); };
+    p.redraw = () => p.draw && p.draw();
+    sketch(p);
+    live.add(p);
+    if (p.setup) p.setup();
+    if (p.windowResized) { let tm = 0; window.addEventListener('resize', () => { clearTimeout(tm); tm = setTimeout(() => p.windowResized(), 150); }); }
+    wake();
+    self.loop = p.loop; self.noLoop = p.noLoop; self.redraw = p.redraw;
+  };
+})();
+
+</script>
+<script>
+/* Живая гравюра: циклические одноцветные иллюстрации для газетной полосы (p5.js, instance mode) */
+(function () {
+  const SEED = {{SEED}};
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const TAU = Math.PI * 2;
+
+  function readColors() {
+    const cs = getComputedStyle(document.documentElement);
+    const g = (n, d) => (cs.getPropertyValue(n) || d).trim();
+    return { ink: g('--ink', '#1b1c1f'), bg: g('--tint', '#e9e7df'), muted: g('--muted', '#5d5f66'), accent: g('--accent', '#1f3d6b') };
+  }
+  const RGB = {}, RGBA = new Map();
+  function rgb(hex) { if (!RGB[hex]) { const h = hex.replace('#', ''); const f = h.length === 3 ? h.split('').map(x => x + x).join('') : h; RGB[hex] = [parseInt(f.slice(0, 2), 16), parseInt(f.slice(2, 4), 16), parseInt(f.slice(4, 6), 16)]; } return RGB[hex]; }
+  function col(p, hex, a) {
+    const al = Math.max(0, Math.min(255, Math.round(a == null ? 255 : a)));
+    const k = hex + al; let v = RGBA.get(k);
+    if (!v) { const c = rgb(hex); v = `rgba(${c[0]},${c[1]},${c[2]},${(al / 255).toFixed(3)})`; RGBA.set(k, v); }
+    return v;
+  }
+  function fmt(n, d) { return n.toFixed(d).replace('.', ','); }
+
+  function grain(p, S, g) {
+    g.noStroke();
+    const n = Math.floor(p.width * p.height / 90);
+    for (let i = 0; i < n; i++) { g.fill(col(p, S.c.ink, p.random(6, 18))); g.rect(p.random(p.width), p.random(p.height), 1, 1); }
+  }
+
+  /* ---------- сцены ---------- */
+  // Библиотека сцен. Параметры приходят из data-params элемента .art и лежат в S.prm.
+  const ART = {};
+  const FONT_L = 'PT Sans Narrow', FONT_D = 'Playfair Display';
+  function lab(p, g, S, size) { g.textFont(FONT_L); g.textStyle(g.NORMAL); g.textSize(Math.max(10, p.width * (size || 0.026))); }
+  const P = (S, k, d) => (S.prm && S.prm[k] != null ? S.prm[k] : d);
+
+  // river — река и пунктирный коридор с движущейся колонной. params: river, place
+  ART.river = {
+    setup(p, S) {
+      const w = p.width, h = p.height;
+      S.cy = x => h * 0.42 + Math.sin(x / w * Math.PI * 1.25 + 0.4) * h * 0.07;
+      S.rw = h * 0.3; S.dots = [];
+      for (let i = 0; i < w * h / 260; i++) { const x = p.random(w), y = p.random(h); if (Math.abs(y - S.cy(x)) > S.rw / 2 + 4) S.dots.push([x, y, p.random(0.6, 1.8), p.noise(x * 0.02, y * 0.02)]); }
+      S.path = t => [w * (0.04 + 0.92 * t), h * 0.86 - Math.sin(t * Math.PI) * h * 0.1 - t * h * 0.04];
+    },
+    bake(p, S, g) {
+      const w = p.width, h = p.height; g.noStroke();
+      for (const d of S.dots) { g.fill(col(p, S.c.ink, 40 + d[3] * 110)); g.circle(d[0], d[1], d[2]); }
+      g.stroke(col(p, S.c.ink, 150)); g.strokeWeight(1.2); g.noFill(); g.drawingContext.setLineDash([5, 6]);
+      g.beginShape(); for (let k = 0; k <= 40; k++) { const q = S.path(k / 40); g.vertex(q[0], q[1]); } g.endShape(); g.drawingContext.setLineDash([]);
+      g.noStroke(); g.fill(col(p, S.c.ink, 200)); lab(p, g, S, 0.022);
+      g.textAlign(g.LEFT, g.TOP); g.text(P(S, 'river', 'РЕКА'), w * 0.04, S.cy(w * 0.04) - S.rw / 2 - 18);
+      g.textAlign(g.RIGHT, g.BOTTOM); g.text(P(S, 'place', 'КОРИДОР'), w * 0.96, h * 0.96);
+    },
+    draw(p, S, t) {
+      const w = p.width, n = 24; p.noFill();
+      for (let i = 0; i < n; i++) {
+        const f = i / (n - 1); p.stroke(col(p, S.c.ink, 70 + 120 * Math.sin(f * Math.PI))); p.strokeWeight(0.6 + Math.sin(f * Math.PI) * 0.7);
+        p.beginShape(); for (let x = -6; x <= w + 6; x += 6) p.vertex(x, S.cy(x) + (f - 0.5) * S.rw + (p.noise(x * 0.012 - t * 0.35, i * 0.25, t * 0.05) - 0.5) * 10); p.endShape();
+      }
+      p.noStroke();
+      for (let k = 0; k < 7; k++) { const u = ((t * 0.035) + k / 7) % 1, q = S.path(u); p.fill(col(p, S.c.accent, 255 * Math.sin(u * Math.PI))); p.circle(q[0], q[1] - 1, 6); }
+    }
+  };
+
+  // orbit — стороны переговоров вокруг стола, нити диалога. params: labels [2..6]
+  ART.orbit = {
+    setup(p, S) { S.labels = P(S, 'labels', ['СТОРОНА А', 'СТОРОНА Б', 'СТОРОНА В']).slice(0, 6); S.parts = []; for (let d = 0; d < S.labels.length; d++) for (let i = 0; i < 24; i++) S.parts.push({ d, a: p.random(TAU), r: p.random(2, 12), s: p.random(1000) }); },
+    bake(p, S, g) { const cx = p.width / 2, cy = p.height / 2, R = Math.min(p.width, p.height) * 0.32; g.noFill(); g.strokeWeight(0.8); for (let k = 1; k <= 5; k++) { g.stroke(col(p, S.c.ink, 22 + k * 6)); g.ellipse(cx, cy, R * 0.4 * k, R * 0.29 * k); } },
+    draw(p, S, t) {
+      const w = p.width, h = p.height, cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.32, n = S.labels.length, pos = [];
+      for (let d = 0; d < n; d++) { const a = d * TAU / n + t * 0.12 - Math.PI / 2; pos.push([cx + Math.cos(a) * R * 1.25, cy + Math.sin(a) * R * 0.85]); }
+      for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
+        const al = 0.5 + 0.5 * Math.sin(t * 0.7 + i * 1.7 + j * 2.3); p.stroke(col(p, S.c.ink, 30 + al * 140)); p.strokeWeight(0.6 + al);
+        const mx = (pos[i][0] + pos[j][0]) / 2, my = (pos[i][1] + pos[j][1]) / 2; p.bezier(pos[i][0], pos[i][1], (mx + cx) / 2, (my + cy) / 2, (mx + cx) / 2, (my + cy) / 2, pos[j][0], pos[j][1]);
+      }
+      p.noStroke(); p.fill(col(p, S.c.ink, 170));
+      for (const q of S.parts) { const a = q.a + t * 0.4 + p.noise(q.s, t * 0.2) * 2; p.circle(pos[q.d][0] + Math.cos(a) * q.r * 1.4, pos[q.d][1] + Math.sin(a) * q.r, 2.2); }
+      p.fill(col(p, S.c.accent, 220)); p.circle(cx, cy, 7 + 2 * Math.sin(t * 2));
+      p.fill(col(p, S.c.ink, 190)); lab(p, p, S); p.textAlign(p.CENTER, p.CENTER);
+      for (let d = 0; d < n; d++) p.text(S.labels[d], pos[d][0], pos[d][1] + (pos[d][1] > cy ? 22 : -22));
+    }
+  };
+
+  // bars — столбцы показателей, растут штриховкой; снизу лента. params: bars [[подпись, число], ...] (2..6), prefix, suffix, decimals, ticker
+  ART.bars = {
+    setup(p, S) { S.data = P(S, 'bars', [['А', 1], ['Б', 2]]).slice(0, 6); S.max = Math.max(...S.data.map(d => d[1])) * 1.05; },
+    bake(p, S, g) { const w = p.width, h = p.height; g.stroke(col(p, S.c.ink, 160)); g.strokeWeight(1); g.line(w * 0.06, h * 0.74, w * 0.94, h * 0.74); },
+    draw(p, S, t) {
+      const w = p.width, h = p.height, base = h * 0.74, top = h * 0.16, n = S.data.length;
+      const ph = (t % 9) / 9, grow = p.constrain(ph / 0.35, 0, 1), e = 1 - Math.pow(1 - grow, 3), fade = ph > 0.9 ? 1 - (ph - 0.9) / 0.1 : 1;
+      const slot = w * 0.88 / n, bw = slot * 0.62, pre = P(S, 'prefix', ''), suf = P(S, 'suffix', ''), dec = P(S, 'decimals', 1);
+      S.data.forEach((d, i) => {
+        const x = w * 0.06 + slot * i + (slot - bw) / 2, bh = (base - top) * d[1] / S.max * e;
+        p.stroke(col(p, S.c.ink, 200 * fade)); p.strokeWeight(1);
+        for (let y = base; y > base - bh; y -= 3.2) p.line(x, y, x + bw, y);
+        p.noFill(); p.rect(x, base - bh, bw, bh); p.noStroke();
+        if (e > 0.98) { p.fill(col(p, S.c.ink, 230 * fade)); p.textFont(FONT_D); p.textStyle(p.BOLD); p.textSize(Math.max(11, Math.min(w * 0.04, bw * 0.45))); p.textAlign(p.CENTER, p.BOTTOM); p.text(pre + fmt(d[1], dec) + suf, x + bw / 2, base - bh - 6); p.textStyle(p.NORMAL); }
+        p.fill(col(p, S.c.ink, 180)); lab(p, p, S, 0.024); p.textAlign(p.CENTER, p.TOP); p.text(d[0], x + bw / 2, base + 6);
+      });
+      const msg = P(S, 'ticker', ''); if (!msg) return;
+      const ty = h * 0.9; p.fill(col(p, S.c.ink, 235)); p.rect(0, ty - h * 0.05, w, h * 0.1);
+      p.fill(col(p, S.c.bg, 255)); lab(p, p, S, 0.028); p.textAlign(p.LEFT, p.CENTER);
+      const m = msg + '   ·   ', tw = p.textWidth(m), off = -((t * 40) % tw); for (let x = off; x < w; x += tw) p.text(m, x, ty);
+    }
+  };
+
+  // pipes — потоки сходятся к центру. params: center, sources (3..12)
+  ART.pipes = {
+    setup(p, S) {
+      const w = p.width, h = p.height, n = P(S, 'sources', 9); S.c0 = [w * 0.5, h * 0.5]; S.src = [];
+      for (let i = 0; i < n; i++) { const a = i / n * TAU + p.random(-0.2, 0.2), r = p.random(0.42, 0.5); S.src.push({ x: w / 2 + Math.cos(a) * w * r, y: h / 2 + Math.sin(a) * h * r * 0.95, bend: p.random(-0.5, 0.5) }); }
+      S.flow = []; for (let i = 0; i < 160; i++) S.flow.push({ k: i % n, u: p.random(), v: p.random(0.03, 0.06) });
+    },
+    pt(S, s, u) { const [cx, cy] = S.c0, mx = (s.x + cx) / 2 - (cy - s.y) * s.bend, my = (s.y + cy) / 2 + (cx - s.x) * s.bend, a = (1 - u) * (1 - u), b = 2 * (1 - u) * u, c = u * u; return [a * s.x + b * mx + c * cx, a * s.y + b * my + c * cy]; },
+    bake(p, S, g) {
+      g.noFill();
+      for (const s of S.src) {
+        for (const [c, wt] of [[col(p, S.c.ink, 60), 5], [col(p, S.c.bg, 255), 3]]) { g.stroke(c); g.strokeWeight(wt); g.beginShape(); for (let k = 0; k <= 30; k++) { const q = this.pt(S, s, k / 30); g.vertex(q[0], q[1]); } g.endShape(); }
+        g.noStroke(); g.fill(col(p, S.c.ink, 200)); g.circle(s.x, s.y, 7); g.noFill();
+      }
+    },
+    draw(p, S, t) {
+      p.noStroke();
+      for (const f of S.flow) { const u = (f.u + t * f.v) % 1, q = this.pt(S, S.src[f.k], u); p.fill(col(p, S.c.accent, 90 + 160 * u)); p.circle(q[0], q[1], 2.4); }
+      const [cx, cy] = S.c0;
+      for (let r = 0; r < 4; r++) { const ph = (t * 0.5 + r / 4) % 1; p.noFill(); p.stroke(col(p, S.c.accent, 180 * (1 - ph))); p.strokeWeight(1.2); p.circle(cx, cy, 10 + ph * 70); }
+      p.noStroke(); p.fill(col(p, S.c.ink, 240)); p.circle(cx, cy, 12);
+      const txt = P(S, 'center', ''); if (!txt) return;
+      lab(p, p, S); p.textAlign(p.CENTER, p.TOP); const lw = p.textWidth(txt) + 10;
+      p.fill(col(p, S.c.bg, 235)); p.rect(cx - lw / 2, cy + 12, lw, p.width * 0.026 + 8); p.fill(col(p, S.c.ink, 220)); p.text(txt, cx, cy + 16);
+    }
+  };
+
+  // level — уровень в ёмкости переходит от одного значения к другому (цена, запасы, уровень воды).
+  // params: title, from, to, min, max, step, prefix, fromLabel, toLabel
+  ART.level = {
+    setup(p, S) { const lo = P(S, 'min', 0), hi = P(S, 'max', 100); S.Y = v => p.height * 0.9 - (v - lo) / (hi - lo) * p.height * 0.8; },
+    bake(p, S, g) {
+      const w = p.width, x0 = w * 0.3, lo = P(S, 'min', 0), hi = P(S, 'max', 100), st = P(S, 'step', (hi - lo) / 8), pre = P(S, 'prefix', '');
+      lab(p, g, S, 0.024); g.textAlign(g.RIGHT, g.CENTER); g.strokeWeight(1);
+      for (let s = lo + st; s <= hi + 1e-9; s += st) { g.stroke(col(p, S.c.ink, 110)); g.line(x0 - 10, S.Y(s), x0 - 2, S.Y(s)); g.noStroke(); g.fill(col(p, S.c.ink, 150)); g.text(pre + fmt(s, st < 1 ? 1 : 0), x0 - 14, S.Y(s)); }
+      g.fill(col(p, S.c.ink, 235)); g.textFont(FONT_D); g.textStyle(g.BOLD); g.textSize(Math.max(13, w * 0.045)); g.textAlign(g.CENTER, g.TOP); g.text(P(S, 'title', ''), w / 2, p.height * 0.1 + 6); g.textStyle(g.NORMAL);
+    },
+    draw(p, S, t) {
+      const w = p.width, h = p.height, x0 = w * 0.3, x1 = w * 0.7, yTop = h * 0.1, yBot = h * 0.9;
+      const a = P(S, 'from', 50), b = P(S, 'to', 40), ph = (t % 10) / 10, k = ph < 0.15 ? 0 : ph < 0.65 ? (ph - 0.15) / 0.5 : 1, e = k * k * (3 - 2 * k);
+      const v = a + (b - a) * e, amp = 3 + 5 * Math.sin(k * Math.PI), surf = x => S.Y(v) + Math.sin(x * 0.05 + t * 2.2) * amp * 0.6 + (p.noise(x * 0.02, t * 0.5) - 0.5) * amp;
+      p.noStroke(); p.fill(col(p, S.c.ink, 32)); p.beginShape(); p.vertex(x0, yBot); for (let x = x0; x <= x1; x += 4) p.vertex(x, surf(x)); p.vertex(x1, yBot); p.endShape(p.CLOSE);
+      p.stroke(col(p, S.c.ink, 150)); p.strokeWeight(0.8); for (let y = yBot - 4; y > S.Y(v) + amp + 2; y -= 5) p.line(x0 + 2, y, x1 - 2, y);
+      p.noFill(); p.stroke(col(p, S.c.ink, 220)); p.strokeWeight(1.6); p.beginShape(); for (let x = x0; x <= x1; x += 4) p.vertex(x, surf(x)); p.endShape();
+      p.stroke(col(p, S.c.ink, 230)); p.strokeWeight(2); p.line(x0, yTop, x0, yBot); p.line(x1, yTop, x1, yBot); p.line(x0, yBot, x1, yBot);
+      p.drawingContext.setLineDash([4, 4]); p.strokeWeight(1); p.stroke(col(p, S.c.ink, 120)); p.line(x1, S.Y(a), w * 0.78, S.Y(a)); p.stroke(col(p, S.c.accent, 200)); p.line(x1, S.Y(b), w * 0.78, S.Y(b)); p.drawingContext.setLineDash([]);
+      p.noStroke(); lab(p, p, S, 0.024); p.textAlign(p.LEFT, p.CENTER); p.fill(col(p, S.c.ink, 190)); p.text(P(S, 'fromLabel', ''), w * 0.79, S.Y(a)); p.fill(col(p, S.c.accent, 255)); p.text(P(S, 'toLabel', ''), w * 0.79, S.Y(b));
+    }
+  };
+
+  // ticker — биржевое табло: крупное число, подпись и две бегущие строки. params: big, sub, rows [строка1, строка2]
+  ART.ticker = {
+    setup(p, S) { S.rows = P(S, 'rows', ['', '']).map(r => r + '   ·   '); },
+    bake(p, S, g) {
+      const w = p.width, h = p.height;
+      g.textFont(FONT_D); g.textStyle(g.BOLD); g.textSize(Math.max(22, w * 0.11)); g.textAlign(g.CENTER, g.CENTER); g.noStroke();
+      g.fill(col(p, S.c.ink, 240)); g.text(P(S, 'big', ''), w / 2, h * 0.36); g.textStyle(g.NORMAL);
+      lab(p, g, S, 0.032); g.fill(col(p, S.c.accent, 255)); g.text(P(S, 'sub', ''), w / 2, h * 0.52);
+    },
+    draw(p, S, t) {
+      const w = p.width, h = p.height; p.noStroke();
+      if (!S.mx || (S.fc = (S.fc || 0) + 1) % 6 === 0) {
+        if (!S.mx) S.mx = p.createGraphics(w, h);
+        const g = S.mx, ctx = g.drawingContext; g.clear();
+        const step = Math.max(7, w / 60), r = step * 0.18, B = 6, paths = []; for (let b = 0; b < B; b++) paths.push(new Path2D());
+        for (let x = step / 2; x < w; x += step) for (let y = step / 2; y < h * 0.62; y += step) { const n = p.noise(x * 0.01, y * 0.01, t * 0.25); paths[Math.min(B - 1, Math.floor(n * B))].rect(x - r, y - r, r * 2, r * 2); }
+        for (let b = 0; b < B; b++) { ctx.fillStyle = col(p, S.c.ink, 10 + (b + 0.5) / B * 34); ctx.fill(paths[b]); }
+      }
+      p.image(S.mx, 0, 0);
+      const band = h * 0.12;
+      S.rows.forEach((msg, i) => {
+        if (msg.trim() === '·') return;
+        const y = h * (0.7 + i * 0.15); p.fill(col(p, S.c.ink, i ? 200 : 235)); p.rect(0, y - band / 2, w, band);
+        p.fill(col(p, S.c.bg, 255)); lab(p, p, S, 0.03); p.textAlign(p.LEFT, p.CENTER);
+        const tw = p.textWidth(msg); let off = (t * 36) % tw; off = i ? off - tw : -off; for (let x = off; x < w; x += tw) p.text(msg, x, y);
+      });
+    }
+  };
+
+  // grid — стойки чипов загораются волной, по дуге летит ракета (ИИ, дата-центры, вычисления, космос). params: label
+  ART.grid = {
+    setup(p, S) { S.cols = 18; S.rows = 8; S.r = []; for (let i = 0; i < S.cols * S.rows; i++) S.r.push(p.random()); },
+    bake(p, S, g) {
+      const w = p.width, h = p.height, gx = w * 0.08, gy = h * 0.42, cw = w * 0.84 / S.cols, ch = h * 0.5 / S.rows;
+      g.stroke(col(p, S.c.ink, 150)); g.strokeWeight(0.8); g.noFill(); for (let i = 0; i < S.cols; i++) for (let j = 0; j < S.rows; j++) g.rect(gx + i * cw + 2, gy + j * ch + 2, cw - 4, ch - 4);
+      g.stroke(col(p, S.c.ink, 120)); g.strokeWeight(1); g.drawingContext.setLineDash([3, 5]); g.beginShape(); for (let k = 0; k <= 40; k++) { const u = k / 40; g.vertex(p.lerp(w * 0.08, w * 0.92, u), h * 0.36 - Math.sin(u * Math.PI) * h * 0.32); } g.endShape(); g.drawingContext.setLineDash([]);
+      g.noStroke(); g.fill(col(p, S.c.ink, 200)); lab(p, g, S); g.textAlign(g.RIGHT, g.BOTTOM); g.text(P(S, 'label', ''), w * 0.92, h * 0.97);
+    },
+    draw(p, S, t) {
+      const w = p.width, h = p.height, gx = w * 0.08, gy = h * 0.42, cw = w * 0.84 / S.cols, ch = h * 0.5 / S.rows; p.noStroke();
+      for (let i = 0; i < S.cols; i++) for (let j = 0; j < S.rows; j++) { const wv = 0.5 + 0.5 * Math.sin((i * 0.45 + j * 0.25) - t * 2.2 + S.r[i * S.rows + j] * 0.8); if (wv > 0.55) { p.fill(col(p, S.c.accent, (wv - 0.55) / 0.45 * 230)); p.rect(gx + i * cw + 4, gy + j * ch + 4, cw - 8, ch - 8); } }
+      const ay = h * 0.36, pk = h * 0.32, u = (t * 0.09) % 1, x = p.lerp(w * 0.08, w * 0.92, u), y = ay - Math.sin(u * Math.PI) * pk, ang = Math.atan2(-Math.cos(u * Math.PI) * Math.PI * pk, w * 0.84);
+      p.push(); p.translate(x, y); p.rotate(ang); p.fill(col(p, S.c.ink, 240)); p.triangle(10, 0, -6, -4, -6, 4);
+      for (let k = 1; k < 8; k++) { p.fill(col(p, S.c.ink, 160 - k * 18)); p.circle(-6 - k * 4, (p.noise(k, t * 3) - 0.5) * 3, 3.5 - k * 0.3); } p.pop();
+    }
+  };
+
+  // sea — морское дно: каустика, лучи, предметы на дне, пузырьки (археология, океан, экология моря). params: label, objects (1..8)
+  ART.sea = {
+    setup(p, S) {
+      const w = p.width, h = p.height, n = P(S, 'objects', 6);
+      S.floor = x => h * 0.78 + (p.noise(x * 0.006) - 0.5) * h * 0.12;
+      S.amph = []; for (let i = 0; i < n; i++) { const x = w * (0.1 + (i + 0.5) * 0.8 / n + p.random(-0.02, 0.02)); S.amph.push({ x, y: S.floor(x) - 6, a: p.random(-1.3, 1.3), s: p.random(0.8, 1.15) * Math.min(w, h) * 0.075 }); }
+      S.sand = []; for (let i = 0; i < w * 1.4; i++) { const x = p.random(w); S.sand.push([x, S.floor(x) + p.random(0, h * 0.25), p.random(0.6, 1.6)]); }
+      S.bub = []; for (let i = 0; i < 26; i++) S.bub.push({ k: i % n, o: p.random(), v: p.random(0.05, 0.1), dx: p.random(1000) });
+    },
+    bake(p, S, g) {
+      const w = p.width, h = p.height;
+      g.noStroke(); g.fill(col(p, S.c.ink, 26)); g.beginShape(); g.vertex(0, h); for (let x = 0; x <= w; x += 6) g.vertex(x, S.floor(x)); g.vertex(w, h); g.endShape(g.CLOSE);
+      g.fill(col(p, S.c.ink, 90)); for (const d of S.sand) g.circle(d[0], d[1], d[2]);
+      for (const a of S.amph) {
+        const s = a.s; g.push(); g.translate(a.x, a.y); g.rotate(a.a); g.fill(col(p, S.c.ink, 200)); g.noStroke(); g.beginShape();
+        g.vertex(0, -s * 1.1); g.bezierVertex(s * 0.18, -s * 1.1, s * 0.12, -s * 0.8, s * 0.2, -s * 0.7); g.bezierVertex(s * 0.55, -s * 0.45, s * 0.5, s * 0.35, s * 0.12, s * 0.8);
+        g.bezierVertex(s * 0.06, s * 0.95, -s * 0.06, s * 0.95, -s * 0.12, s * 0.8); g.bezierVertex(-s * 0.5, s * 0.35, -s * 0.55, -s * 0.45, -s * 0.2, -s * 0.7); g.bezierVertex(-s * 0.12, -s * 0.8, -s * 0.18, -s * 1.1, 0, -s * 1.1); g.endShape(g.CLOSE);
+        g.noFill(); g.stroke(col(p, S.c.ink, 200)); g.strokeWeight(Math.max(1.5, s * 0.06)); g.arc(s * 0.2, -s * 0.78, s * 0.3, s * 0.32, -Math.PI / 2, Math.PI / 2); g.arc(-s * 0.2, -s * 0.78, s * 0.3, s * 0.32, Math.PI / 2, Math.PI * 1.5); g.pop();
+      }
+      g.noStroke(); g.fill(col(p, S.c.ink, 200)); lab(p, g, S); g.textAlign(g.RIGHT, g.TOP); g.text(P(S, 'label', ''), w * 0.96, h * 0.04);
+    },
+    draw(p, S, t) {
+      const w = p.width, h = p.height; p.noStroke();
+      for (let i = 0; i < 6; i++) { const x = w * (0.1 + i * 0.17) + Math.sin(t * 0.3 + i) * 12; p.fill(col(p, S.c.ink, 10 + 10 * (0.5 + 0.5 * Math.sin(t * 0.7 + i * 2)))); p.quad(x, 0, x + w * 0.06, 0, x + w * 0.16, h * 0.8, x + w * 0.06, h * 0.8); }
+      p.noFill(); p.strokeWeight(0.8);
+      for (let r = 0; r < 7; r++) { p.stroke(col(p, S.c.ink, 55 - r * 6)); p.beginShape(); for (let x = 0; x <= w; x += 5) p.vertex(x, h * (0.05 + r * 0.04) + (p.noise(x * 0.015, r, t * 0.4) - 0.5) * 18); p.endShape(); }
+      p.strokeWeight(0.9);
+      for (const b of S.bub) { const a = S.amph[b.k], u = (b.o + t * b.v) % 1; p.stroke(col(p, S.c.ink, 160 * (1 - u))); p.circle(a.x + (p.noise(b.dx, u * 3) - 0.5) * 30, a.y - u * (a.y - h * 0.05), 2 + u * 4); }
+    }
+  };
+
+  // calls — сеть звонков/связей: узлы шлют импульсы в центральный узел, пунктир к цели.
+  // params: hub [имя, x, y], nodes [[имя, x, y], ...], target [имя, x, y] (необязательно); x, y — доли ширины/высоты 0..1
+  ART.calls = {
+    setup(p, S) {
+      const w = p.width, h = p.height, m = a => [a[0], a[1] * w, a[2] * h];
+      S.hub = m(P(S, 'hub', ['ЦЕНТР', 0.7, 0.42])); S.nodes = P(S, 'nodes', [['А', 0.3, 0.2]]).map(m); const tg = P(S, 'target', null); S.tg = tg ? m(tg) : null;
+    },
+    bake(p, S, g) {
+      const H = S.hub; g.noFill(); g.stroke(col(p, S.c.ink, 90)); g.strokeWeight(1);
+      for (const n of S.nodes) g.line(n[1], n[2], H[1], H[2]);
+      if (S.tg) { g.drawingContext.setLineDash([4, 6]); g.stroke(col(p, S.c.ink, 120)); g.line(H[1], H[2], S.tg[1], S.tg[2]); g.drawingContext.setLineDash([]); }
+      g.noStroke(); lab(p, g, S);
+      for (const n of [H, ...S.nodes]) { g.fill(col(p, S.c.ink, 230)); g.circle(n[1], n[2], 8); g.fill(col(p, S.c.ink, 200)); const below = n === H || n[2] > p.height * 0.5; g.textAlign(g.CENTER, below ? g.TOP : g.BOTTOM); g.text(n[0], n[1], n[2] + (below ? 10 : -10)); }
+      if (S.tg) { g.noFill(); g.stroke(col(p, S.c.ink, 200)); g.strokeWeight(1.2); g.circle(S.tg[1], S.tg[2], 10); g.noStroke(); g.fill(col(p, S.c.ink, 200)); const right = S.tg[1] < p.width * 0.5; g.textAlign(right ? g.LEFT : g.RIGHT, g.CENTER); g.text(S.tg[0], S.tg[1] + (right ? 12 : -12), S.tg[2]); }
+    },
+    draw(p, S, t) {
+      const H = S.hub; p.noFill(); p.strokeWeight(1);
+      S.nodes.forEach((n, i) => {
+        const o = i * 0.17;
+        for (let r = 0; r < 3; r++) { const ph = (t * 0.45 + r / 3 + o) % 1; p.stroke(col(p, S.c.accent, 170 * (1 - ph))); p.circle(n[1], n[2], 10 + ph * 46); }
+        p.noStroke();
+        for (let q = 0; q < 4; q++) { const u = (t * 0.25 + q / 4 + o) % 1; p.fill(col(p, S.c.accent, 255 * Math.sin(u * Math.PI))); p.circle(p.lerp(n[1], H[1], u), p.lerp(n[2], H[2], u), 4); }
+        p.noFill();
+      });
+      if (S.tg) { const pl = 0.5 + 0.5 * Math.sin(t * 1.6); p.stroke(col(p, S.c.accent, 60 + 140 * pl)); p.strokeWeight(1.2); p.circle(S.tg[1], S.tg[2], 16 + pl * 10); }
+    }
+  };
+
+  // range — диапазон/ставка и шкала времени до решения. params: value, title, start, end
+  ART.range = {
+    setup() {},
+    bake(p, S, g) {
+      const w = p.width, h = p.height, y0 = h * 0.3, y1 = h * 0.5, ty = h * 0.76;
+      g.stroke(col(p, S.c.ink, 110)); g.strokeWeight(0.8); for (let x = w * 0.08; x < w * 0.92; x += 6) g.line(x, y0, x + 10, y1);
+      g.noFill(); g.stroke(col(p, S.c.ink, 220)); g.strokeWeight(1.4); g.rect(w * 0.08, y0, w * 0.84, y1 - y0);
+      g.noStroke(); g.fill(col(p, S.c.bg, 235)); g.rect(w * 0.26, (y0 + y1) / 2 - h * 0.05, w * 0.48, h * 0.1);
+      g.fill(col(p, S.c.ink, 235)); g.textFont(FONT_D); g.textStyle(g.BOLD); g.textSize(Math.max(14, w * 0.05)); g.textAlign(g.CENTER, g.CENTER); g.text(P(S, 'value', ''), w / 2, (y0 + y1) / 2); g.textStyle(g.NORMAL);
+      lab(p, g, S); g.fill(col(p, S.c.ink, 190)); g.text(P(S, 'title', ''), w / 2, y0 - h * 0.07);
+      g.stroke(col(p, S.c.ink, 160)); g.strokeWeight(1); g.line(w * 0.18, ty, w * 0.82, ty);
+      g.noStroke(); g.fill(col(p, S.c.ink, 220)); g.circle(w * 0.18, ty, 9); g.circle(w * 0.82, ty, 9);
+      g.fill(col(p, S.c.ink, 200)); g.textAlign(g.CENTER, g.TOP); g.text(P(S, 'start', ''), w * 0.18, ty + 10); g.text(P(S, 'end', ''), w * 0.82, ty + 10);
+    },
+    draw(p, S, t) {
+      const w = p.width, ty = p.height * 0.76, u = (t * 0.12) % 1, e = u < 0.8 ? u / 0.8 : 1, x = w * 0.18 + w * 0.64 * e;
+      p.noStroke(); p.fill(col(p, S.c.accent, 230)); p.rect(w * 0.18, ty - 2, w * 0.64 * e, 4);
+      p.noFill(); p.strokeWeight(1); for (let r = 0; r < 3; r++) { const ph = (t * 0.8 + r / 3) % 1; p.stroke(col(p, S.c.accent, 150 * (1 - ph))); p.circle(x, ty, 8 + ph * 26); }
+      p.noStroke(); p.fill(col(p, S.c.accent, 255)); p.circle(x, ty, 8);
+    }
+  };
+
+  // waves — интерференция волн от двух источников (наука, физика, математика, связь). params: label
+  ART.waves = {
+    setup() {},
+    bake(p, S, g) { const w = p.width, h = p.height; g.noStroke(); g.fill(col(p, S.c.bg, 235)); g.rect(0, h * 0.86, w, h * 0.14); },
+    draw(p, S, t) {
+      const w = p.width, h = p.height, a = [w * 0.35, h * 0.46], b = [w * 0.65, h * 0.46], gap = Math.max(14, w * 0.045), R = Math.hypot(w, h) * 0.6;
+      p.noFill(); p.strokeWeight(0.9);
+      for (const c of [a, b]) { const off = (t * 22) % gap; for (let r = off; r < R; r += gap) { p.stroke(col(p, S.c.ink, 150 * (1 - r / R))); p.circle(c[0], c[1], r * 2); } }
+      p.noStroke(); p.fill(col(p, S.c.accent, 255)); p.circle(a[0], a[1], 7); p.circle(b[0], b[1], 7);
+      p.fill(col(p, S.c.bg, 235)); p.rect(0, h * 0.86, w, h * 0.14);
+      p.fill(col(p, S.c.ink, 210)); lab(p, p, S); p.textAlign(p.CENTER, p.CENTER); p.text(P(S, 'label', ''), w / 2, h * 0.93);
+    }
+  };
+
+  // flow — поток частиц слева направо через узкое горло (торговля, поставки, миграция, трафик, санкции). params: left, right, label
+  ART.flow = {
+    setup(p, S) { S.pts = []; for (let i = 0; i < 260; i++) S.pts.push({ u: p.random(), lane: p.random(-1, 1), v: p.random(0.05, 0.09), s: p.random(1000) }); },
+    yOf(p, S, u, lane) { const h = p.height, neck = 1 - 0.78 * Math.exp(-Math.pow((u - 0.5) / 0.12, 2)); return h * 0.46 + lane * h * 0.3 * neck; },
+    bake(p, S, g) {
+      const w = p.width, h = p.height; g.noFill(); g.stroke(col(p, S.c.ink, 170)); g.strokeWeight(1.4);
+      for (const sgn of [-1, 1]) { g.beginShape(); for (let k = 0; k <= 60; k++) { const u = k / 60; g.vertex(w * u, this.yOf(p, S, u, sgn * 1.08)); } g.endShape(); }
+      g.noStroke(); g.fill(col(p, S.c.ink, 200)); lab(p, g, S); g.textAlign(g.LEFT, g.BOTTOM); g.text(P(S, 'left', ''), w * 0.03, h * 0.97);
+      g.textAlign(g.RIGHT, g.BOTTOM); g.text(P(S, 'right', ''), w * 0.97, h * 0.97); g.textAlign(g.CENTER, g.TOP); g.text(P(S, 'label', ''), w * 0.5, h * 0.03);
+    },
+    draw(p, S, t) {
+      const w = p.width; p.noStroke();
+      for (const q of S.pts) { const u = (q.u + t * q.v) % 1, slow = 1 - 0.5 * Math.exp(-Math.pow((u - 0.5) / 0.12, 2)); const y = this.yOf(p, S, u, q.lane + (p.noise(q.s, t * 0.3) - 0.5) * 0.15); p.fill(col(p, S.c.accent, 80 + 150 * slow * Math.sin(u * Math.PI))); p.circle(w * u, y, 2.4); }
+    }
+  };
+
+  // vote — полукруг зала: места заполняются «за» (парламент, выборы, голосование, совет). params: seats, yes, label; реальные числа из источника
+  ART.vote = {
+    setup(p, S) {
+      const w = p.width, h = p.height, N = Math.min(600, P(S, 'seats', 100)), cx = w / 2, cy = h * 0.82, R1 = Math.min(w * 0.44, h * 0.72), R0 = R1 * 0.38;
+      const rows = Math.max(4, Math.round(Math.sqrt(N / 3))); let tot = 0; const per = [];
+      for (let r = 0; r < rows; r++) { const rr = R0 + (R1 - R0) * r / (rows - 1); per.push(rr); tot += rr; }
+      S.seats = []; per.forEach(rr => { const k = Math.round(N * rr / tot); for (let i = 0; i < k; i++) { const a = Math.PI + Math.PI * (i + 0.5) / k; S.seats.push([cx + Math.cos(a) * rr, cy + Math.sin(a) * rr, a]); } });
+      S.seats.sort((a, b) => a[2] - b[2]); S.seats = S.seats.slice(0, N); S.d = Math.max(3, (R1 - R0) / rows * 0.7);
+    },
+    bake(p, S, g) {
+      g.noFill(); g.stroke(col(p, S.c.ink, 120)); g.strokeWeight(0.8); for (const s of S.seats) g.circle(s[0], s[1], S.d);
+      g.noStroke(); g.fill(col(p, S.c.ink, 200)); lab(p, g, S); g.textAlign(g.CENTER, g.TOP); g.text(P(S, 'label', ''), p.width / 2, p.height * 0.86);
+    },
+    draw(p, S, t) {
+      const yes = Math.min(S.seats.length, P(S, 'yes', 0)), ph = (t % 9) / 9, k = Math.floor(yes * p.constrain(ph / 0.6, 0, 1)), fade = ph > 0.92 ? 1 - (ph - 0.92) / 0.08 : 1;
+      p.noStroke(); p.fill(col(p, S.c.accent, 235 * fade)); for (let i = 0; i < k; i++) p.circle(S.seats[i][0], S.seats[i][1], S.d);
+      p.fill(col(p, S.c.ink, 240 * fade)); p.textFont(FONT_D); p.textStyle(p.BOLD); p.textSize(Math.max(16, p.width * 0.06)); p.textAlign(p.CENTER, p.BOTTOM); p.text(P(S, 'big', yes + ' / ' + S.seats.length), p.width / 2, p.height * 0.8); p.textStyle(p.NORMAL);
+    }
+  };
+
+  // pulse — одно событие расходится волнами по точечной карте (заявление, запуск, открытие, решение). params: label, x, y (доли)
+  ART.pulse = {
+    setup(p, S) { const w = p.width, h = p.height; S.cx = w * P(S, 'x', 0.5); S.cy = h * P(S, 'y', 0.48); S.dots = []; const st = Math.max(9, w / 46); for (let x = st / 2; x < w; x += st) for (let y = st / 2; y < h * 0.86; y += st) S.dots.push([x, y, Math.hypot(x - S.cx, y - S.cy)]); },
+    bake(p, S, g) { g.noStroke(); g.fill(col(p, S.c.ink, 40)); for (const d of S.dots) g.circle(d[0], d[1], 2); g.fill(col(p, S.c.ink, 200)); lab(p, g, S); g.textAlign(g.CENTER, g.TOP); g.text(P(S, 'label', ''), p.width / 2, p.height * 0.9); },
+    draw(p, S, t) {
+      const R = Math.hypot(p.width, p.height) * 0.7, front = ((t * 0.18) % 1) * R; p.noStroke();
+      for (const d of S.dots) { const k = Math.abs(d[2] - front); if (k < 26) { p.fill(col(p, S.c.accent, 220 * (1 - k / 26) * (1 - d[2] / R))); p.circle(d[0], d[1], 3.4); } }
+      p.fill(col(p, S.c.accent, 255)); p.circle(S.cx, S.cy, 9 + 2 * Math.sin(t * 3));
+    }
+  };
+
+  // rocket — старт ракеты со звёздным небом (космос, запуски, спутники). params: label
+  ART.rocket = {
+    setup(p, S) { S.stars = []; for (let i = 0; i < 140; i++) S.stars.push([p.random(p.width), p.random(p.height * 0.75), p.random(0.6, 1.8), p.random(TAU)]); },
+    bake(p, S, g) { const w = p.width, h = p.height; g.noStroke(); g.fill(col(p, S.c.ink, 40)); g.rect(0, h * 0.88, w, h * 0.12); g.stroke(col(p, S.c.ink, 200)); g.strokeWeight(2); g.line(w * 0.46, h * 0.88, w * 0.46, h * 0.6); g.noStroke(); g.fill(col(p, S.c.ink, 200)); lab(p, g, S); g.textAlign(g.RIGHT, g.TOP); g.text(P(S, 'label', ''), w * 0.96, h * 0.04); },
+    draw(p, S, t) {
+      const w = p.width, h = p.height, ph = (t % 8) / 8; p.noStroke();
+      for (const s of S.stars) { p.fill(col(p, S.c.ink, 60 + 80 * (0.5 + 0.5 * Math.sin(t * 1.5 + s[3])))); p.circle(s[0], s[1], s[2]); }
+      const lift = ph < 0.15 ? 0 : Math.pow((ph - 0.15) / 0.85, 2), x = w * 0.5 + lift * w * 0.12, y = h * 0.84 - lift * h * 1.05, fade = ph > 0.92 ? 1 - (ph - 0.92) / 0.08 : 1;
+      for (let k = 0; k < 18; k++) { const u = k / 18; p.fill(col(p, S.c.ink, (140 - k * 7) * fade)); p.circle(x - lift * w * 0.02 * k + (p.noise(k, t * 4) - 0.5) * 6, y + 14 + k * 5 * (0.4 + lift), 4 + k * 0.9); }
+      p.push(); p.translate(x, y); p.rotate(lift * 0.12); p.fill(col(p, S.c.ink, 240 * fade)); p.rect(-4, -14, 8, 28); p.triangle(-4, -14, 4, -14, 0, -24); p.triangle(-4, 14, -9, 18, -4, 6); p.triangle(4, 14, 9, 18, 4, 6); p.pop();
+    }
+  };
+
+  /* ---------- запуск ---------- */
+  function mount(el) {
+    const name = el.dataset.art; const scene = ART[name]; if (!scene) return;
+    const inst = new p5(p => {
+      const S = {};
+      function init() {
+        const w = Math.max(200, Math.floor(el.clientWidth)); const h = Math.round(w * 2 / 3);
+        if (p.width !== w || p.height !== h) p.resizeCanvas(w, h);
+        p.randomSeed(SEED + name.length); p.noiseSeed(SEED + name.length);
+        if (!el._prm) { try { el._prm = JSON.parse(el.dataset.params || '{}'); } catch (e) { el._prm = {}; } }
+        S.prm = el._prm;
+        S.c = readColors(); scene.setup(p, S); S.mx = null;
+        S.layer = p.createGraphics(w, h); S.layer.background(S.c.bg);
+        if (scene.bake) scene.bake(p, S, S.layer);
+        grain(p, S, S.layer);
+      }
+      p.setup = () => {
+        const w = Math.max(200, Math.floor(el.clientWidth));
+        p.createCanvas(w, Math.round(w * 2 / 3)); p.pixelDensity(Math.min(2, window.devicePixelRatio || 1));
+        init(); S.init = init;
+        if (reduce) { frame(2.5); p.noLoop(); }
+      };
+      function frame(t) { p.image(S.layer, 0, 0); scene.draw(p, S, t); }
+      p.draw = () => frame(p.millis() / 1000);
+      p.windowResized = () => { if (Math.floor(el.clientWidth) !== p.width) { init(); if (reduce) p.redraw(); } };
+      S.redrawStatic = () => { if (reduce) frame(2.5); };
+      el._S = S;
+    }, el);
+    el._p = inst;
+    if ('IntersectionObserver' in window && !reduce) {
+      new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? inst.loop() : inst.noLoop()), { rootMargin: '80px' }).observe(el);
+    }
+  }
+  function retheme() { document.querySelectorAll('.art').forEach(el => { if (el._S && el._S.init) { el._S.init(); el._S.redrawStatic(); } }); }
+  function start() { document.querySelectorAll('.art').forEach(mount); }
+  if (window.matchMedia) window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', retheme);
+  new MutationObserver(retheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  const go = () => (document.fonts && document.fonts.ready ? document.fonts.ready.then(start) : start());
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+})();
+
+</script>
